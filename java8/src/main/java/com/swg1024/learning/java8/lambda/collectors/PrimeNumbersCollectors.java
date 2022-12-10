@@ -1,14 +1,18 @@
 package com.swg1024.learning.java8.lambda.collectors;
 
+import com.swg1024.learning.java8.lambda.parallel.forJoinPool.ForkJoinSumCalculator;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collectors.partitioningBy;
@@ -143,6 +147,27 @@ public class PrimeNumbersCollectors implements Collector<Integer, Map<Boolean, L
         }
     }
 
+    @Test
+    public void testPerformance4() {
+        long fastest = Long.MAX_VALUE;
+        Map<Boolean, List<Integer>> map = null;
+        for (int i = 0; i < 10; i++ ) {
+            long start = System.nanoTime();
+            // 运行测试10次
+
+            long [] numbers = LongStream.rangeClosed(1, 1_000_000).toArray();
+            ForkJoinTask<Long> task = new ForkJoinSumCalculator(numbers);
+            System.out.println(new ForkJoinPool().invoke(task));
+            // 将前一百万个自然收按质数和非质数分区
+            long duration = (System.nanoTime() - start) / 1_000_000;
+            if (duration < fastest) {
+                // 检查这个执行是否是最快的一个
+                fastest = duration;
+            }
+            System.out.println("Fastest execution done in " + fastest + " msecs");
+        }
+    }
+
     public Map<Boolean, List<Integer>> partitionPrimes(int n) {
         return IntStream.rangeClosed(2, n).boxed().collect(partitioningBy(candidate -> oldIsPrime(candidate)));
     }
@@ -150,6 +175,11 @@ public class PrimeNumbersCollectors implements Collector<Integer, Map<Boolean, L
     public boolean oldIsPrime(int candidate) {
         int candidateRoot = (int) Math.sqrt((double) candidate);
         return IntStream.rangeClosed(2, candidateRoot).noneMatch(i -> candidate % 2 == 0);
+    }
+
+    @Test
+    public void testCore() {
+        System.out.println(Runtime.getRuntime().availableProcessors());
     }
 
 }
