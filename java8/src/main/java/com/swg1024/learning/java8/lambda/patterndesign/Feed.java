@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 注册观察者
  * 向已注册的观察者推送信息
  *
  * @version 1.0
@@ -33,5 +34,6 @@ public class Feed implements Subject{
                 System.out.println("Breaking news in NY! " + tweet);
             }
         });
+        f.notifyObservers("money increasing!");
     }
 }
