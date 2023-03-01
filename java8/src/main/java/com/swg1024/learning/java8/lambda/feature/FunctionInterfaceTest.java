@@ -3,6 +3,7 @@ package com.swg1024.learning.java8.lambda.feature;
 import org.apache.commons.lang3.function.TriFunction;
 import org.junit.Test;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 
@@ -30,6 +31,28 @@ public class FunctionInterfaceTest {
                 (f.apply(a) + f.apply(b)) * (b-a) / 2.0).apply(x-> x+10.0, 3.0, 7.0));
     }
 
+    @Test
+    public void test2() {
+        int x = getInte(2);
+        System.out.println(r(p1(x), p2(x)));
+        Function<Integer, Integer> func = x1 -> getInte(x1);
+    }
+
+    public int getInte(int i) {
+        return i * 3;
+    }
+
+    public int p1(int x) {
+        return x + 5;
+    }
+
+    public int p2(int x) {
+        return x + 6;
+    }
+
+    public int r(int p1, int p2){
+        return p1 + p2;
+    }
 
 }
 
