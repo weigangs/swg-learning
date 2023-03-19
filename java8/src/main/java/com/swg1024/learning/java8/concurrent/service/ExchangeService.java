@@ -11,6 +11,15 @@ public class ExchangeService {
     }
 
     public double getRate(Money from, Money to) {
+        delay();
         return 1.2;
+    }
+
+    public void delay() {
+        try{
+            Thread.sleep(1000L);
+        }catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

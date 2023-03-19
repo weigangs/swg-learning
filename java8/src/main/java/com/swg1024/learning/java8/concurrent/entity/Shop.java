@@ -6,6 +6,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import static com.swg1024.learning.java8.concurrent.future.FutureAndOnCompletionTest.randomDelay;
+
 /**
  * @version 1.0
  * @author: nicholas
@@ -35,11 +37,24 @@ public class Shop {
         return String.format("%s:%.2f:%s", name, price, code);
     }
 
+    public String getPriceWithDiscountRandomDelay(String product) {
+        double price =  this.caculatePriceRandomDelay(product);
+        Discount.Code code = Discount.Code.values()[random.nextInt(Discount.Code.values().length)];
+        return String.format("%s:%.2f:%s", name, price, code);
+    }
+
 
     public double caculatePrice(String product)  {
         delay();
         return random.nextDouble() * product.charAt(0) + product.charAt(1);
     }
+
+    public double caculatePriceRandomDelay(String product)  {
+        randomDelay();
+        return random.nextDouble() * product.charAt(0) + product.charAt(1);
+    }
+
+
 
     public void delay() {
         try{
