@@ -3,6 +3,7 @@ package com.swg1024.learning.java8.rxjava;
 import com.swg1024.learning.java8.reactive.entity.TempInfo;
 import com.swg1024.learning.java8.rxjava.observer.TempObserver;
 import io.reactivex.Observable;
+import lombok.NonNull;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -35,4 +36,5 @@ public class RxJavaTestFirst {
         Observable<TempInfo> observable = getTemperature("New York");
         observable.blockingSubscribe(new TempObserver());
     }
+
 }
